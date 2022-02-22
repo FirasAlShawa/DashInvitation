@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +41,8 @@ class Home extends StatelessWidget {
 class InvitationCard extends StatelessWidget {
   const InvitationCard({Key? key}) : super(key: key);
 
+  static const int screenDivideFactor = 3;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -65,9 +69,9 @@ class InvitationCard extends StatelessWidget {
               ),
             ),
             margin: const EdgeInsets.all(16.0),
-            width: getWidth(context) / 2,
-            height: getHeight(context) / 2,
-            child: const Center(child: Text("Hi")),
+            padding: const EdgeInsets.all(16.0),
+            width: getWidth(context) / screenDivideFactor,
+            child: InvitationText(),
           ),
         ],
       ),
@@ -80,5 +84,61 @@ class InvitationCard extends StatelessWidget {
 
   double getHeight(BuildContext context) {
     return MediaQuery.of(context).size.height;
+  }
+}
+
+class InvitationText extends StatefulWidget {
+  InvitationText({Key? key}) : super(key: key);
+
+  @override
+  State<InvitationText> createState() => _InvitationTextState();
+}
+
+class _InvitationTextState extends State<InvitationText> {
+  static const double sizedBoxHeight = 32.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Text(
+              "دعوة حضور",
+              style: setTextStyle(fontSize: 40),
+            ),
+          ),
+          const SizedBox(
+            height: sizedBoxHeight,
+          ),
+          Text(
+            "عزيزي / أحمد",
+            style: setTextStyle(fontSize: 30),
+          ),
+          Text(
+            "سأسعد برؤيتك يوم 19 فبراير ، في مدينة الرياض.",
+            style: setTextStyle(fontSize: 20),
+          ),
+          const SizedBox(
+            height: sizedBoxHeight,
+          ),
+          Text(
+            "مع تحياتي،\nداش",
+            style: setTextStyle(fontSize: 20),
+          ),
+        ],
+      ),
+    );
+  }
+
+  TextStyle setTextStyle({
+    required double fontSize,
+  }) {
+    return TextStyle(
+      fontSize: fontSize,
+      fontFamily: "FFYaseer",
+    );
   }
 }

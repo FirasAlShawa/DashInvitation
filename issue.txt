@@ -1,2 +1,6 @@
 issue with getting the MediaQuery:
 https://stackoverflow.com/questions/68635405/no-mediaquery-widget-ancestor-found
+
+
+right-to-left (RTL) in flutter
+https://stackoverflow.com/questions/50535185/right-to-left-rtl-in-flutter
