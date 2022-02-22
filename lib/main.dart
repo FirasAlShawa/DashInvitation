@@ -71,7 +71,7 @@ class InvitationCard extends StatelessWidget {
             margin: const EdgeInsets.all(16.0),
             padding: const EdgeInsets.all(16.0),
             width: getWidth(context) / screenDivideFactor,
-            child: InvitationText(),
+            child: InvitationContent(),
           ),
         ],
       ),
@@ -87,46 +87,61 @@ class InvitationCard extends StatelessWidget {
   }
 }
 
-class InvitationText extends StatefulWidget {
-  InvitationText({Key? key}) : super(key: key);
+class InvitationContent extends StatefulWidget {
+  InvitationContent({Key? key}) : super(key: key);
 
   @override
-  State<InvitationText> createState() => _InvitationTextState();
+  State<InvitationContent> createState() => _InvitationContentState();
 }
 
-class _InvitationTextState extends State<InvitationText> {
+class _InvitationContentState extends State<InvitationContent> {
   static const double sizedBoxHeight = 32.0;
+  late TextDirection textDirection;
 
   @override
   Widget build(BuildContext context) {
+    textDirection = Directionality.of(context);
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Center(
-            child: Text(
-              "دعوة حضور",
-              style: setTextStyle(fontSize: 40),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Image.asset(
+                'images/dash_1.png',
+                height: 100,
+              ),
             ),
           ),
-          const SizedBox(
-            height: sizedBoxHeight,
-          ),
-          Text(
-            "عزيزي / أحمد",
-            style: setTextStyle(fontSize: 30),
-          ),
-          Text(
-            "سأسعد برؤيتك يوم 19 فبراير ، في مدينة الرياض.",
-            style: setTextStyle(fontSize: 20),
-          ),
-          const SizedBox(
-            height: sizedBoxHeight,
-          ),
-          Text(
-            "مع تحياتي،\nداش",
-            style: setTextStyle(fontSize: 20),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  "دعوة حضور",
+                  style: setTextStyle(fontSize: 40),
+                ),
+              ),
+              const SizedBox(
+                height: sizedBoxHeight,
+              ),
+              Text(
+                "عزيزي / أحمد",
+                style: setTextStyle(fontSize: 30),
+              ),
+              Text(
+                "سأسعد برؤيتك يوم 19 فبراير ، في مدينة الرياض.",
+                style: setTextStyle(fontSize: 20),
+              ),
+              const SizedBox(
+                height: sizedBoxHeight,
+              ),
+              Text(
+                "مع تحياتي،\nداش",
+                style: setTextStyle(fontSize: 20),
+              ),
+            ],
           ),
         ],
       ),
