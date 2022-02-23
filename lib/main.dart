@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,41 +40,53 @@ class Home extends StatelessWidget {
 }
 
 class InvitationCard extends StatelessWidget {
-  const InvitationCard({Key? key}) : super(key: key);
+  //share and screenshot
+  GlobalKey previewContainer = GlobalKey();
+  int originalSize = 800;
 
   static const int screenDivideFactor = 3;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xff48D2FD),
-            Color(0xffADF6FF),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          tileMode: TileMode.clamp,
+    return InkWell(
+      onTap: () {
+        ShareFilesAndScreenshotWidgets().shareScreenshot(previewContainer,
+            originalSize, "This invitation from dash", "Name.jpg", "image/jpg",
+            text: "This is the caption!");
+      },
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xff48D2FD),
+              Color(0xffADF6FF),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            tileMode: TileMode.clamp,
+          ),
         ),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            RepaintBoundary(
+              key: previewContainer,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(20.0),
+                  ),
+                ),
+                margin: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16.0),
+                width: getWidth(context) / screenDivideFactor,
+                child: InvitationContent(),
               ),
             ),
-            margin: const EdgeInsets.all(16.0),
-            padding: const EdgeInsets.all(16.0),
-            width: getWidth(context) / screenDivideFactor,
-            child: InvitationContent(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
