@@ -5,9 +5,13 @@ https://stackoverflow.com/questions/68635405/no-mediaquery-widget-ancestor-found
 right-to-left (RTL) in flutter
 https://stackoverflow.com/questions/50535185/right-to-left-rtl-in-flutter
 
+Listview inside Column
+https://flutteragency.com/add-a-listview-to-a-column/
 
 ------------
 code 
 alignment: Directionality.of(context) == TextDirection.rtl
     ? Alignment.bottomRight
     : Alignment.bottomLeft,
+
+
