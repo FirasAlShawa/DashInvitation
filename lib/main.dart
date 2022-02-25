@@ -147,7 +147,7 @@ class _InvitationContentState extends State<InvitationContent> {
                 height: sizedBoxHeight,
               ),
               Obx(() => Text(
-                    '${controller.name}',
+                    'عزيزي / ${controller.name} ',
                     style: setTextStyle(fontSize: 20),
                   )),
               Obx(
