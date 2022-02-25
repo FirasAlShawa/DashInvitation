@@ -3,9 +3,10 @@ import 'package:get/get.dart';
 class InvitationDataController extends GetxController {
   //vars
   var name = "أحمد".obs;
-  var day = "أحمد".obs;
-  var month = "أحمد".obs;
-  var city = "أحمد".obs;
+  var day = "19".obs;
+  var month = "فبراير".obs;
+  var city = "الرياض".obs;
+  var imageUrl = "images/dash_1.png".obs;
 
   //set functions
   void setName(String value) {
@@ -28,9 +29,15 @@ class InvitationDataController extends GetxController {
     refresh();
   }
 
+  void setImageUrl(String value) {
+    imageUrl.value = value;
+    refresh();
+  }
+
   //get functions
   get currentName => name.value;
   get currentDay => day.value;
   get currentMonth => month.value;
   get currentCity => city.value;
+  get currentImageUrl => imageUrl.value;
 }

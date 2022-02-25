@@ -48,7 +48,7 @@ class Home extends StatelessWidget {
           ),
         ),
         child: Column(
-          children: [InvitationCard(), InvitationCardForm()],
+          children: [InvitationCard(), InvitationButtons()],
         ),
       )),
     );
@@ -125,9 +125,11 @@ class _InvitationContentState extends State<InvitationContent> {
           Positioned.fill(
             child: Align(
               alignment: Alignment.bottomLeft,
-              child: Image.asset(
-                'images/dash_1.png',
-                height: 100,
+              child: Obx(
+                () => Image.asset(
+                  '${controller.imageUrl}',
+                  height: 100,
+                ),
               ),
             ),
           ),
@@ -184,57 +186,115 @@ class InvitationCardForm extends StatefulWidget {
 }
 
 class _InvitationCardFormState extends State<InvitationCardForm> {
+  var imageList = [
+    Image.asset(
+      'images/dash_1.png',
+      semanticLabel: "images/dash_1.png",
+      height: 100,
+    ),
+    Image.asset(
+      'images/dash_2.png',
+      semanticLabel: "images/dash_2.png",
+      height: 100,
+    ),
+    Image.asset(
+      'images/dash_3.png',
+      semanticLabel: "images/dash_3.png",
+      height: 100,
+    ),
+    Image.asset(
+      'images/dash_4.png',
+      semanticLabel: "images/dash_4.png",
+      height: 100,
+    ),
+    Image.asset(
+      'images/dash_5.png',
+      semanticLabel: "images/dash_5.png",
+      height: 100,
+    ),
+    Image.asset(
+      'images/dash_6.png',
+      semanticLabel: "images/dash_6.png",
+      height: 100,
+    )
+  ];
+
   @override
   Widget build(BuildContext context) {
     InvitationDataController controller = Get.put(InvitationDataController());
     return Container(
+      height: 500.0,
       margin: EdgeInsets.symmetric(horizontal: 16.0),
-      child: Column(
-        children: [
-          TextField(
-            onChanged: (value) {
-              controller.setName(value);
-            },
-            decoration: setInputDecoration(hint: "الٍاسم"),
-          ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: TextField(
-                  onChanged: (value) {
-                    controller.setMonth(value);
-                  },
-                  decoration: setInputDecoration(hint: "الشهر"),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              onChanged: (value) {
+                controller.setName(value);
+              },
+              decoration: setInputDecoration(hint: "الٍاسم"),
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    onChanged: (value) {
+                      controller.setMonth(value);
+                    },
+                    decoration: setInputDecoration(hint: "الشهر"),
+                    textInputAction: TextInputAction.next,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 16.0,
-              ),
-              Expanded(
-                flex: 2,
-                child: TextField(
-                  onChanged: (value) {
-                    controller.setDay(value);
-                  },
-                  decoration: setInputDecoration(hint: "اليوم"),
+                const SizedBox(
+                  width: 16.0,
                 ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 16.0,
-          ),
-          TextField(
-            onChanged: (value) {
-              controller.setCity(value);
-            },
-            decoration: setInputDecoration(hint: "المدينة"),
-          )
-        ],
+                Expanded(
+                  flex: 2,
+                  child: TextField(
+                    onChanged: (value) {
+                      controller.setDay(value);
+                    },
+                    decoration: setInputDecoration(hint: "اليوم"),
+                    textInputAction: TextInputAction.next,
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
+            TextField(
+              onChanged: (value) {
+                controller.setCity(value);
+              },
+              decoration: setInputDecoration(hint: "المدينة"),
+              textInputAction: TextInputAction.next,
+            ),
+            SizedBox(
+                height: 100,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        child: index < imageList.length
+                            ? imageList[index]
+                            : Text("out!"),
+                        onTap: () {
+                          var selectedImageUrl =
+                              imageList[index].semanticLabel.toString();
+                          controller.setImageUrl(selectedImageUrl);
+                        },
+                      );
+                    },
+                    itemCount: imageList.length)),
+            Text("يمكنك الأختيار ملابس داش المفضل لديك من القائمة الأفقية"),
+          ],
+        ),
       ),
     );
   }
@@ -246,5 +306,34 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
         hintTextDirection: TextDirection.rtl,
         filled: true,
         fillColor: Colors.white);
+  }
+}
+
+class InvitationButtons extends StatelessWidget {
+  const InvitationButtons({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: ElevatedButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Padding(
+                          padding: MediaQuery.of(context).viewInsets,
+                          child: InvitationCardForm());
+                    },
+                  );
+                },
+                child: Text("Hi")),
+          )
+        ],
+      ),
+    );
   }
 }
