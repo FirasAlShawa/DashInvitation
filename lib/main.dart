@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:dash_invitation/controllers/InvitationDataController.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:share_files_and_screenshot_widgets/share_files_and_screenshot_widgets.dart';
+
+//share and screenshot
+GlobalKey previewContainer = GlobalKey();
+int originalSize = 800;
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +20,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'Flutter Demo',
+      title: 'Dash Invitation',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -48,7 +52,8 @@ class Home extends StatelessWidget {
           ),
         ),
         child: Column(
-          children: [InvitationCard(), InvitationButtons()],
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [InvitationCard(), InvitationButtons(), MadeWithLove()],
         ),
       )),
     );
@@ -56,20 +61,15 @@ class Home extends StatelessWidget {
 }
 
 class InvitationCard extends StatelessWidget {
-  //share and screenshot
-  GlobalKey previewContainer = GlobalKey();
-  int originalSize = 800;
-
   static const int screenDivideFactor = 3;
+  //share and screenshot
+  // GlobalKey previewContainer = GlobalKey();
+  // int originalSize = 800;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        ShareFilesAndScreenshotWidgets().shareScreenshot(previewContainer,
-            originalSize, "This invitation from dash", "Name.jpg", "image/jpg",
-            text: "This is the caption!");
-      },
+      onTap: () {},
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -86,6 +86,7 @@ class InvitationCard extends StatelessWidget {
               margin: const EdgeInsets.all(16.0),
               padding: const EdgeInsets.all(16.0),
               width: getWidth(context) / screenDivideFactor,
+              height: getHeight(context) / 2.5,
               child: InvitationContent(),
             ),
           ),
@@ -147,6 +148,7 @@ class _InvitationContentState extends State<InvitationContent> {
               ),
               Obx(() => Text(
                     '${controller.name}',
+                    style: setTextStyle(fontSize: 20),
                   )),
               Obx(
                 () => Text(
@@ -219,6 +221,15 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
     )
   ];
 
+  TextStyle setTextStyle({
+    required double fontSize,
+  }) {
+    return TextStyle(
+      fontSize: fontSize,
+      fontFamily: "FFYaseer",
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     InvitationDataController controller = Get.put(InvitationDataController());
@@ -228,12 +239,23 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            const SizedBox(
+              height: 16.0,
+            ),
+            Text(
+              "تعديل الدعوة",
+              style: setTextStyle(fontSize: 25),
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
             TextField(
               onChanged: (value) {
                 controller.setName(value);
               },
               decoration: setInputDecoration(hint: "الٍاسم"),
               textInputAction: TextInputAction.next,
+              style: setTextStyle(fontSize: 15),
             ),
             const SizedBox(
               height: 16.0,
@@ -248,6 +270,7 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
                     },
                     decoration: setInputDecoration(hint: "الشهر"),
                     textInputAction: TextInputAction.next,
+                    style: setTextStyle(fontSize: 15),
                   ),
                 ),
                 const SizedBox(
@@ -261,6 +284,7 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
                     },
                     decoration: setInputDecoration(hint: "اليوم"),
                     textInputAction: TextInputAction.next,
+                    style: setTextStyle(fontSize: 15),
                   ),
                 )
               ],
@@ -274,6 +298,7 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
               },
               decoration: setInputDecoration(hint: "المدينة"),
               textInputAction: TextInputAction.next,
+              style: setTextStyle(fontSize: 15),
             ),
             SizedBox(
                 height: 100,
@@ -292,7 +317,10 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
                       );
                     },
                     itemCount: imageList.length)),
-            Text("يمكنك الأختيار ملابس داش المفضل لديك من القائمة الأفقية"),
+            Text(
+              "يمكنك الأختيار ملابس داش المفضل لديك من القائمة الأفقية",
+              style: setTextStyle(fontSize: 15),
+            ),
           ],
         ),
       ),
@@ -310,14 +338,28 @@ class _InvitationCardFormState extends State<InvitationCardForm> {
 }
 
 class InvitationButtons extends StatelessWidget {
-  const InvitationButtons({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 16.0),
       child: Row(
         children: [
+          Expanded(
+            child: ElevatedButton(
+                onPressed: () {
+                  ShareFilesAndScreenshotWidgets().shareScreenshot(
+                      previewContainer,
+                      originalSize,
+                      "This invitation from dash",
+                      "Name.jpg",
+                      "image/jpg",
+                      text: "This is the caption!");
+                },
+                child: Text("مشاركة الدعوة")),
+          ),
+          SizedBox(
+            width: 16.0,
+          ),
           Expanded(
             child: ElevatedButton(
                 onPressed: () {
@@ -330,10 +372,31 @@ class InvitationButtons extends StatelessWidget {
                     },
                   );
                 },
-                child: Text("Hi")),
-          )
+                child: Text("تعديل الدعوة")),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class MadeWithLove extends StatelessWidget {
+  const MadeWithLove({Key? key}) : super(key: key);
+
+  TextStyle setTextStyle({
+    required double fontSize,
+  }) {
+    return TextStyle(
+      fontSize: fontSize,
+      fontFamily: "FFYaseer",
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "Made with Love - Firas Al Shawa",
+      style: setTextStyle(fontSize: 20),
     );
   }
 }
